@@ -7,7 +7,7 @@ import string
 import csv
 
 class DDWRT:
-    def __init__(self, hostname, username, password):
+    def __init__(self, hostname, ip, username, password):
         self.hostname = hostname
         self.username = username
         self.password = password
@@ -157,22 +157,46 @@ class DDWRT:
         for ap, row in aps.items():
             print ap, row[8][:20]
 
+
+        
 import getopt
 def main(argv, stdout, environ):
-    progname = sys.argv[0]
-    optlist, args = getopt.getopt(argv[1:], "", ["help"])
-    
-    dd = DDWRT("192.168.1.1", "root", "admin")
 
-    if len(args) == 0:
-        dd.current_ap()
-        return
+    hostname = None
+    verbose = False
+    ip = None
+    def usage():
+        print 'Usage: '+sys.argv[0]+' -hostname hostname -ip ip_address'
         
-    cmd = args[0]
-    if cmd == "connect":
-        dd.connect(args[1])
-    elif cmd == "survey":
-        dd.site_survey()
+    try:
+        opts, args = getopt.getopt(argv, 'hi:o:tbpms:', ['help', 'hostname=', 'ip='])
+    except getopt.GetoptError as err:
+        # print help information and exit:
+        print str(err) # will print something like "option -a not recognized"
+        usage()
+        sys.exit(2)
+        
+    if len(args) == 0:
+        usage()
+        #dd.current_ap()
+        sys.exit(2)
+        
+    for opt, arg in opts:
+        if opt in ('-h' , '--help'):
+            usage()
+            sys.exit(2)
+        elif opt in ("-ip", "--ip"):
+            ip = arg
+        elif opt in ("-hostname", "--hostname"):
+            hostname = arg
+                
+    dd = DDWRT(hostname, ip, "root", "admin")
+
+   # cmd = args[0]
+    #if cmd == "connect":
+    #    dd.connect(args[1])
+    #elif cmd == "survey":
+    #    dd.site_survey()
 
 if __name__ == "__main__":
     main(sys.argv, sys.stdout, os.environ)

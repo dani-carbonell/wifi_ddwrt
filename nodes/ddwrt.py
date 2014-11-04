@@ -55,9 +55,9 @@ def breakUpTrash():
 
 class WifiAP:
   def __init__(self, hostname, username, password):
-    self.hostname = hostname
-    self.username = username
-    self.password = password
+    self.hostname = "cob4-1-extern"
+    self.username = "root"
+    self.password = "admin"
 
   def newBrowser(self):
     # Create new browsers all the time because its data structures grow
@@ -137,12 +137,16 @@ class WifiAP:
       parts = line.split("::", 1)
       if len(parts) == 2:
         d[parts[0]] = parts[1]
+
       
     essid = d.get('wl_ssid', '')
     wl_channel = d.get('wl_channel', '').split()[0]
-    channel = int(wl_channel)
+    if (wl_channel == "Unknown") :
+      channel = None
+    else:
+      channel = int(wl_channel)
     rate = d.get('wl_rate', '')
-    
+
     signal = None
     noise = None
     snr = None
@@ -173,13 +177,13 @@ class WifiAP:
       #make sure that we put a stamp on things
       header = Header()
       header.stamp = rospy.Time.now()
-
+    
       ap = AccessPoint(header=header,
                        essid=essid,
                        macaddr=macaddr,
-                       signal=signal,
-                       noise=noise,
-                       snr=snr,
+                       signal=int(signal),
+                       noise=int(noise),
+                       snr=int(snr),
                        channel=channel,
                        rate=rate,
                        quality=quality,
