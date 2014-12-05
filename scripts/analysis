@@ -39,7 +39,7 @@ MAX_RSSI = 100
 
 import rospy
 from wifi_ddwrt.msg import *
-from pr2_msgs.msg import AccessPoint
+from cob_msgs.msg import AccessPoint
 
 import math
 import tf

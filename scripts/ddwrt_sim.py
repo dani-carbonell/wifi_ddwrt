@@ -39,7 +39,7 @@ import random
 
 import rospy
 from wifi_ddwrt.msg import *
-from pr2_msgs.msg import AccessPoint
+from cob_msgs.msg import AccessPoint
 
 from std_msgs.msg import Header
 

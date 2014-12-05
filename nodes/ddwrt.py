@@ -38,7 +38,7 @@ import StringIO
 
 import rospy
 from wifi_ddwrt.msg import *
-from pr2_msgs.msg import AccessPoint
+from cob_msgs.msg import AccessPoint
 
 from mechanize import Browser
 from std_msgs.msg import Header
@@ -201,8 +201,8 @@ def loop():
 
   ap = WifiAP(router_ip, username, password)
 
-  pub1 = rospy.Publisher("ddwrt/sitesurvey", SiteSurvey)
-  pub2 = rospy.Publisher("ddwrt/accesspoint", AccessPoint)
+  pub1 = rospy.Publisher("ddwrt/sitesurvey", SiteSurvey, queue_size=10)
+  pub2 = rospy.Publisher("ddwrt/accesspoint", AccessPoint, queue_size=10)
 
   r = rospy.Rate(.5)
   lastTime = 0
